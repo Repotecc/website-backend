@@ -9,7 +9,7 @@ require_once "Mail.php";
 
 $host = "ssl://mail.repotecc.com";
 $username = "admin@repotecc.com";
-$password = "admin1953.";
+$password = "*******";
 $port = "465";
 
 
