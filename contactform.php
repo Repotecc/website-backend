@@ -1,51 +1,92 @@
 <?php 
 
-ini_set("include_path", '/home2/kennysu1/php:' . ini_get("include_path") );
+    header("Access-Control-Allow-Origin: *"); 
+    header("Access-Control-Allow-Headers: Content-Type"); 
+    header("Content-Type: application/json"); 
+    $rest_json = file_get_contents("php://input");
 
-error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED ^ E_STRICT);
+    $_POST = json_decode($rest_json, true); 
+    $errors = array(); 
 
+    if ($_SERVER['REQUEST_METHOD'] === "POST") { 
+        if (empty($_POST['contact_email'])) {
+            $errors[] = 'Email is empty';
+            
+        } else { 
+            //$email = $_POST['email'];
+            $first_name = $_POST["contact_fname"];
+            $last_name = $_POST["contact_lname"];
+            $contact_phone = $_POST["contact_phone"];
+            $email = $_POST["contact_email"];
+            $contact_title = $_POST["contact_title"];
+            $contact_message = $_POST["contact_message"];
+            
+            // validating the email 
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) { 
+                $errors[] = 'Invalid email'; 
+            } 
+                
+        }
+
+        if (empty($_POST['contact_message'])) {
+            
+            $errors[] = 'Message is empty';
+        } else {
+            $message = $_POST['contact_message']; 
+                
+        } 
         
-require_once "Mail.php";
-
-$host = "ssl://mail.repotecc.com";
-$username = "admin@repotecc.com";
-$password = process.env.EMAIL_PASSWORD;
-$port = "465";
-
-
-$contact_fname = $_POST["contact_fname"];
-$contact_lname = $_POST["contact_lname"];
-$contact_email = $_POST["contact_email"];
-$contact_phone = $_POST["contact_phone"];
-$contact_title = $_POST["contact_title"];
-$contact_message = $_POST["contact_message"];
-$to = "info@repotecc.com"; 
-
-
-
-$email_from = $contact_email;
-$email_subject = "Contact us" ;
-$email_body = "First Name: ".$contact_fname."
-\n Last Name: ".$contact_lname."\n Contact Email: ".$contact_email."\n
-Contact Phone: ".$contact_phone."\n Contact Title: ".$contact_title."
-\n Contact Message: ".$contact_message."";
-
-
-$email_address = "ayomide@repotecc.com";
-
-$headers = array ('From' => $email_from, 'To' => $to, 'Subject' => $email_subject, 'Reply-To' => $email_address);
-$smtp = Mail::factory('smtp', array ('host' => $host, 'port' => $port, 'auth' => true, 'username' => $username, 'password' => $password));
-$mail = $smtp->send($to, $headers, $email_body);
-
-
-if (PEAR::isError($mail)) {
-echo("<p>" . $mail->getMessage() . "</p>");
-
-} else {
-    echo "<script>alert('Form Successfully Submitted');
-        location.href = 'https://repotecc.com';
-    </script>";
-
-}
+        if (empty($errors)) {
+                    
+            $date = date('j, F Y h:i A'); 
+            $emailBody = " <html> 
+                                <head> 
+                                    <title>
+                                        $email is contacting you
+                                    </title>
+                                </head> 
+                                <body style=\"background-color:#fafafa;\"> 
+                                    <div style=\"padding:20px;\"> 
+                                        Date: <span style=\"color:#888\">$date</span> 
+                                        <br> FullName: <span style=\"color:#888\">$first_name</span>
+                                                       <span style=\"color:#888\">$last_name</span>
+                                        <br> Email: <span style=\"color:#888\">$email</span>  
+                                        <br> Contact Phone: <span style=\"color:#888\">$contact_phone</span>
+                                        <br> Message Title: <span style=\"color:#888\">$contact_title</span>
+                                        <br> Message <span style=\"color:#888\">$contact_message</span>  
+                                        
+                                    </div> 
+                                </body> 
+                            </html>"; 
+            $headers = 	'From: Contact Form <info@repotecc.com>' . "\r\n" . 
+                        "Reply-To: $email" . "\r\n" . 
+                        "MIME-Version: 1.0\r\n" . 
+                        "Content-Type: text/html; charset=iso-8859-1\r\n";
+                        
+            $to = 'info@repotecc.com'; 
+            $subject = 'Contact Us'; 
+                
+            if (mail(
+                $to, $subject, $emailBody, $headers)) { 
+                    $sent = true;
+            } 
+                
+        } 
+    }
+        ?> 
 
 
+
+<?php if (!empty($errors)) : ?> 
+{ 
+    "status": "fail",
+        "error": <?php echo json_encode($errors) ?> 
+} 
+    
+<?php endif; ?> 
+<?php 
+    if (isset($sent) && $sent === true) : ?> {
+         "status": "success",
+          "message": "Your data was successfully submitted" 
+    }
+    <?php endif; ?>
