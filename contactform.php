@@ -1,12 +1,12 @@
 <?php 
 
-//     header("Access-Control-Allow-Origin: *"); 
-//     header("Access-Control-Allow-Headers: Content-Type"); 
-//     header("Content-Type: application/json"); 
-    header := w.Header()
-    header.Add("Access-Control-Allow-Origin", "*")
-    header.Add("Access-Control-Allow-Methods", "DELETE, POST, GET, OPTIONS")
-    header.Add("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With")
+    header("Access-Control-Allow-Origin: *"); 
+    header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"); 
+    header("Content-Type: application/json"); 
+//     header := w.Header()
+//     header.Add("Access-Control-Allow-Origin", "*")
+//     header.Add("Access-Control-Allow-Methods", "DELETE, POST, GET, OPTIONS")
+//     header.Add("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With")
     $rest_json = file_get_contents("php://input");
 
     $_POST = json_decode($rest_json, true); 
