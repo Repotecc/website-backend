@@ -1,5 +1,8 @@
 <?php 
 
+
+
+
     header("Access-Control-Allow-Origin: *"); 
     header("Access-Control-Allow-Headers: Content-Type"); 
     header("Content-Type: application/json"); 
@@ -8,8 +11,12 @@
     $_POST = json_decode($rest_json, true); 
     $errors = array(); 
 
+// Esse arquivo e pasta é gerado depois de instalação da biblioteca descrita acima
+include_once __DIR__ . '/vendor/autoload.php';
 
-    use PHPMailer\PHPMailer\PHPMailer;
+$dotenv = new Dotenv\Dotenv(__DIR__);
+$dotenv->load();
+use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 // If necessary, modify the path in the require statement below to refer to the
@@ -26,10 +33,10 @@ $senderName = 'Repotecc';
 $recipient = 'info@repotecc.com';
 
 // Replace smtp_username with your Amazon SES SMTP user name.
-$usernameSmtp = process.env.usernameSmtp;
+$usernameSmtp =  $_ENV['usernameSmtp']; 
 
 // Replace smtp_password with your Amazon SES SMTP password.
-$passwordSmtp =  process.env.passwordSmtp;
+$passwordSmtp = $_ENV['passwordSmtp']; 
 
 // Specify a configuration set. If you do not want to use a configuration
 // set, comment or remove the next line.
