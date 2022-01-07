@@ -1,64 +1,20 @@
 <?php 
-  use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
 
-
-function cors() {
-    
-    // Allow from any origin
-    if (isset($_SERVER['HTTP_ORIGIN'])) {
-        // Decide if the origin in $_SERVER['HTTP_ORIGIN'] is one
-        // you want to allow, and if so:
-        header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
-        header('Access-Control-Allow-Credentials: true');
-        header('Access-Control-Max-Age: 86400');    // cache for 1 day
-    }
-    
-    // Access-Control headers are received during OPTIONS requests
-    if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
-        
-        if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
-            // may also be using PUT, PATCH, HEAD etc
-            header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
-        
-        if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
-            header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
-    
-        exit(0);
-    }
-    
-    echo "You have CORS!";
-}
-
-
-
-
-//     header("Access-Control-Allow-Origin: *"); 
-//     header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"); 
-//     header("Content-Type: application/json"); 
-//     header := w.Header()
-//     header.Add("Access-Control-Allow-Origin", "*")
-//     header.Add("Access-Control-Allow-Methods", "DELETE, POST, GET, OPTIONS")
-//     header.Add("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With")
+    header("Access-Control-Allow-Origin: *"); 
+    header("Access-Control-Allow-Headers: Content-Type"); 
+    header("Content-Type: application/json"); 
     $rest_json = file_get_contents("php://input");
 
     $_POST = json_decode($rest_json, true); 
     $errors = array(); 
 
+    require 'vendor/autoload.php';
 
-  
-// If necessary, modify the path in the require statement below to refer to the
-// location of your Composer autoload.php file.
-require 'vendor/autoload.php';
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\Exception;
+    
 
-// Replace sender@example.com with your "From" address.
-// This address must be verified with Amazon SES.
-$sender = 'ayomide@repotecc.com';
-$senderName = 'Repotecc';
-
-// Replace recipient@example.com with a "To" address. If your account
-// is still in the sandbox, this address must be verified.
-$recipient = 'info@repotecc.com';
+    $recipient = 'info@repotecc.com';
 
 // Replace smtp_username with your Amazon SES SMTP user name.
 $usernameSmtp = process.env.usernameSmtp;
@@ -79,9 +35,7 @@ $port = 465;
 // The subject line of the email
 $subject = 'Amazon SES test (SMTP interface accessed using PHP)';
 
-// The plain-text body of the email
-$bodyText =  "Email Test\r\nThis email was sent through the
-    Amazon SES SMTP interface using the PHPMailer class.";
+
 
     if ($_SERVER['REQUEST_METHOD'] === "POST") { 
         if (empty($_POST['contact_email'])) {
@@ -114,7 +68,7 @@ $bodyText =  "Email Test\r\nThis email was sent through the
         if (empty($errors)) {
                     
             $date = date('j, F Y h:i A'); 
-            $bodyHtml = " <html> 
+            $emailBody = " <html> 
                                 <head> 
                                     <title>
                                         $email is contacting you
@@ -140,8 +94,10 @@ $bodyText =  "Email Test\r\nThis email was sent through the
                         
             $to = 'info@repotecc.com'; 
             $subject = 'Contact Us'; 
-                
-           
+            $sender = 'ayomide@repotecc.com';
+            $senderName = 'Repotecc';
+
+              
             $mail = new PHPMailer(true);
 
             try {
@@ -175,8 +131,10 @@ $bodyText =  "Email Test\r\nThis email was sent through the
             } catch (Exception $e) {
                 echo "Email not sent. {$mail->ErrorInfo}", PHP_EOL; //Catch errors from Amazon SES.
             }
-           
-           
+        
+
+
+
             // if (mail(
             //     $to, $subject, $emailBody, $headers)) { 
             //         $sent = true;
