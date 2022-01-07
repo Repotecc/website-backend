@@ -8,19 +8,19 @@
     $_POST = json_decode($rest_json, true); 
     $errors = array(); 
 
-//     require 'vendor/autoload.php';
+    require 'vendor/autoload.php';
 
-//     use PHPMailer\PHPMailer\PHPMailer;
-//     use PHPMailer\PHPMailer\Exception;
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\Exception;
     
 
-//     $recipient = 'info@repotecc.com';
+    $recipient = 'info@repotecc.com';
 
-// // Replace smtp_username with your Amazon SES SMTP user name.
-// $usernameSmtp = process.env.usernameSmtp;
+// Replace smtp_username with your Amazon SES SMTP user name.
+$usernameSmtp = process.env.usernameSmtp;
 
-// // Replace smtp_password with your Amazon SES SMTP password.
-// $passwordSmtp =  process.env.passwordSmtp;
+// Replace smtp_password with your Amazon SES SMTP password.
+$passwordSmtp =  process.env.passwordSmtp;
 
 // Specify a configuration set. If you do not want to use a configuration
 // set, comment or remove the next line.
