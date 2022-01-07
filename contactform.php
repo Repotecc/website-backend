@@ -17,7 +17,7 @@
     $recipient = 'info@repotecc.com';
 
 // Replace smtp_username with your Amazon SES SMTP user name.
-// $usernameSmtp = process.env.usernameSmtp;
+$usernameSmtp = process.env.usernameSmtp;
 
 // // Replace smtp_password with your Amazon SES SMTP password.
 // $passwordSmtp =  process.env.passwordSmtp;
