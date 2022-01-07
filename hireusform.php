@@ -1,5 +1,8 @@
 <?php 
 
+
+
+
     header("Access-Control-Allow-Origin: *"); 
     header("Access-Control-Allow-Headers: Content-Type"); 
     header("Content-Type: application/json"); 
@@ -8,23 +11,34 @@
     $_POST = json_decode($rest_json, true); 
     $errors = array(); 
 
-    require 'vendor/autoload.php';
+// Esse arquivo e pasta é gerado depois de instalação da biblioteca descrita acima
+include_once __DIR__ . '/vendor/autoload.php';
 
-    use PHPMailer\PHPMailer\PHPMailer;
-    use PHPMailer\PHPMailer\Exception;
-    
+$dotenv = new Dotenv\Dotenv(__DIR__);
+$dotenv->load();
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+// If necessary, modify the path in the require statement below to refer to the
+// location of your Composer autoload.php file.
+require 'vendor/autoload.php';
+
+// Replace sender@example.com with your "From" address.
+// This address must be verified with Amazon SES.
+$sender = 'ayomide@repotecc.com';
+$senderName = 'Repotecc';
 
     $recipient = 'info@repotecc.com';
 
 // Replace smtp_username with your Amazon SES SMTP user name.
-$usernameSmtp = process.env.usernameSmtp;
+$usernameSmtp =  $_ENV['usernameSmtp']; 
 
 // Replace smtp_password with your Amazon SES SMTP password.
-$passwordSmtp =  process.env.passwordSmtp;
+$passwordSmtp = $_ENV['passwordSmtp']; 
 
 // Specify a configuration set. If you do not want to use a configuration
 // set, comment or remove the next line.
-$configurationSet = 'ConfigSet';
+// $configurationSet = 'ConfigSet';
 
 // If you're using Amazon SES in a region other than US West (Oregon),
 // replace email-smtp.us-west-2.amazonaws.com with the Amazon SES SMTP
@@ -98,47 +112,47 @@ $subject = 'Amazon SES test (SMTP interface accessed using PHP)';
             $senderName = 'Repotecc';
 
               
-            $mail = new PHPMailer(true);
-
-            try {
-                // Specify the SMTP settings.
-                // $sent = true;
-                $mail->isSMTP(true);
-                $mail->setFrom($sender, $senderName);
-                $mail->Username   = $usernameSmtp;
-                $mail->Password   = $passwordSmtp;
-                $mail->Host       = $host;
-                $mail->Port       = $port;
-                $mail->SMTPAuth   = true;
-                $mail->SMTPSecure = 'ssl';
-                // $mail->addCustomHeader('X-SES-CONFIGURATION-SET', $configurationSet);
+//             $mail = new PHPMailer(true);
+// 
+//             try {
+//                 // Specify the SMTP settings.
+//                 // $sent = true;
+//                 $mail->isSMTP(true);
+//                 $mail->setFrom($sender, $senderName);
+//                 $mail->Username   = $usernameSmtp;
+//                 $mail->Password   = $passwordSmtp;
+//                 $mail->Host       = $host;
+//                 $mail->Port       = $port;
+//                 $mail->SMTPAuth   = true;
+//                 $mail->SMTPSecure = 'ssl';
+//                 // $mail->addCustomHeader('X-SES-CONFIGURATION-SET', $configurationSet);
             
-                // Specify the message recipients.
-                $mail->addAddress($recipient);
-                // You can also add CC, BCC, and additional To recipients here.
+//                 // Specify the message recipients.
+//                 $mail->addAddress($recipient);
+//                 // You can also add CC, BCC, and additional To recipients here.
             
-                // Specify the content of the message.
-                $mail->isHTML(true);
-                $mail->Subject    = $subject;
-                $mail->Body       = $bodyHtml;
-                $mail->AltBody    = $bodyText;
-                $mail->Send();
-                // echo "Email sent!" , PHP_EOL;
-                $sent = true;
+//                 // Specify the content of the message.
+//                 $mail->isHTML(true);
+//                 $mail->Subject    = $subject;
+//                 $mail->Body       = $bodyHtml;
+//                 $mail->AltBody    = $bodyText;
+//                 $mail->Send();
+//                 // echo "Email sent!" , PHP_EOL;
+//                 $sent = true;
 
-            } catch (phpmailerException $e) {
-                echo "An error occurred. {$e->errorMessage()}", PHP_EOL; //Catch errors from PHPMailer.
-            } catch (Exception $e) {
-                echo "Email not sent. {$mail->ErrorInfo}", PHP_EOL; //Catch errors from Amazon SES.
-            }
+//             } catch (phpmailerException $e) {
+//                 echo "An error occurred. {$e->errorMessage()}", PHP_EOL; //Catch errors from PHPMailer.
+//             } catch (Exception $e) {
+//                 echo "Email not sent. {$mail->ErrorInfo}", PHP_EOL; //Catch errors from Amazon SES.
+//             }
         
 
 
 
-            // if (mail(
-            //     $to, $subject, $emailBody, $headers)) { 
-            //         $sent = true;
-            // } 
+            if (mail(
+                $to, $subject, $emailBody, $headers)) { 
+                    $sent = true;
+            } 
                 
         } 
     }
