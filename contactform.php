@@ -1,4 +1,6 @@
 <?php 
+  use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 
 function cors() {
@@ -44,9 +46,7 @@ function cors() {
     $errors = array(); 
 
 
-    use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-
+  
 // If necessary, modify the path in the require statement below to refer to the
 // location of your Composer autoload.php file.
 require 'vendor/autoload.php';
