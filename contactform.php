@@ -31,10 +31,10 @@ $senderName = 'Repotecc';
     $recipient = 'info@repotecc.com';
 
 // Replace smtp_username with your Amazon SES SMTP user name.
-$usernameSmtp =  $_ENV['usernameSmtp']; 
+// $usernameSmtp =  $_ENV['usernameSmtp']; 
 
-// Replace smtp_password with your Amazon SES SMTP password.
-$passwordSmtp = $_ENV['passwordSmtp']; 
+// // Replace smtp_password with your Amazon SES SMTP password.
+// $passwordSmtp = $_ENV['passwordSmtp']; 
 
 // Specify a configuration set. If you do not want to use a configuration
 // set, comment or remove the next line.
