@@ -51,7 +51,7 @@ $configurationSet = 'ConfigSet';
 // replace email-smtp.us-west-2.amazonaws.com with the Amazon SES SMTP
 // endpoint in the appropriate region.
 $host = 'ssl://email-smtp.eu-west-2.amazonaws.com';
-$port = 80;
+$port = 443;
 
 // The subject line of the email
 $subject = 'Amazon SES test (SMTP interface accessed using PHP)';
