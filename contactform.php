@@ -43,7 +43,7 @@ $configurationSet = 'ConfigSet';
 // replace email-smtp.us-west-2.amazonaws.com with the Amazon SES SMTP
 // endpoint in the appropriate region.
 $host = 'email-smtp.eu-west-2.amazonaws.com';
-$port = 587;
+$port = 465;
 
 $bodyText =  "Email Test\r\nThis email was sent through the
     Amazon SES SMTP interface using the PHPMailer class.";
