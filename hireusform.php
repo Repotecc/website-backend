@@ -78,7 +78,7 @@ try {
     $mail->Host       = $host;
     $mail->Port       = $port;
     $mail->SMTPAuth   = true;
-    $mail->SMTPSecure = 'ssl';
+    $mail->SMTPSecure = 'tls';
     // $mail->addCustomHeader('X-SES-CONFIGURATION-SET', $configurationSet);
 
     // Specify the message recipients.
